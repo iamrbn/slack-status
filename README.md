@@ -1,14 +1,12 @@
 # Slack-Status Widget for Scriptable `{}`
 
-Script which displays the current  <img title="Slack Symbol" src="Symbols/Slack_Icon.png" width="17"> Slack status via API as [Scriptable](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4) widget.
+Script which displays the current  <img title="Slack Symbol" src="Symbols/Slack_Icon.png" width="17"> Slack Status via API as [Scriptable](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4) Widget.
 
-<img title="SlackBot" src="Symbols/SlackBot.png" width="77" align="left">
+<img alt= "" title="SlackBot" src="Symbols/SlackBot.png" width="77" align="left">
 
-![Scriptable App](https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png)
+![Scriptable App Icon](https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png)
 
 This is the missing script for all power Slack users.
-
-![Mockup](https://i.imgur.com/jiIXjxXl..jpg)
 
 ## ✨ FEATURES
 
@@ -18,15 +16,24 @@ This is the missing script for all power Slack users.
 
 ### Run in App
 
-By **In App** running the scirpt will present a menu
-
-![MOCKUP](https://i.imgur.com/VtrcNixl..jpg)
+By running **In App** the scirpt will present a menu
 
 <img title="" src="Images/runsInApp.png" width="300">
 
-### Widget Sizes
+### Widget Specifications
 
-in all sisez available (_small, medium & large_)
+Supports all sizes (_small, medium & large_)
+
+<img title="small_light_ok" src="Images/small_light_ok.PNG" width="140"> 
+
+<img title="medium_light_ok" src="Images/medium_light_ok.PNG" width="300"> 
+
+<img title="large_light_ok" src="Images/large_light_ok.PNG" width="300">
+
+The Widgets have **Dynamic Backgrounds**
+
+<img title="" src="Images/dynamicBackground.png" width="500">
+
 
 ### Refresh Intervall
 
@@ -50,8 +57,8 @@ you can set it at every widget via widget parameter
 
 ### Install Script
 1. Install [Scriptable for iOS `↗`](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4)
-2. Copy **each line** of the [Script Link `↗`] - or Download this scriptable-File
-3. `+` Add new Script ![MOCKUP](https://i.imgur.com/aCsxMMDm..jpg)
+2. Copy **each line** of the [Script Link `↗`]() - or Download [this]() scriptable-File
+3. `+` Add new Script
 
 <img title="" src="Images/addNewScript.png" width="250">
 
