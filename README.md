@@ -72,3 +72,6 @@ you can set it at every widget via widget parameter
 4. Chose the widget-size and tap `"Add Widget"`
 5. Tap the widget and choose the script, then set `"When Interacting" = "Run Script"` 
 6. Finish
+
+
+### On First Run
