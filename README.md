@@ -1,18 +1,19 @@
 # Slack-Status Widget for Scriptable `{}`
 
-Script which displays the current  <img title="Slack Symbol" src="Symbols/Slack_Icon.png" width="17"> Slack Status via API as [Scriptable](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4) Widget.
+Script which displays the current  <img title="Slack Symbol" src="Symbols/Slack_Icon.png" width="17"> Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.
 
-<img alt= "" title="SlackBot" src="Symbols/SlackBot.png" width="77" align="left">
+<img title="SlackBot" src="Symbols/SlackBot.png" width="77">
 
-![Scriptable App Icon](https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png)
+<img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
 
 This is the missing script for all power Slack users.
 
 ## ✨ FEATURES
 
+
 ### Clickable Elements
 
-![MOCKUPs](https://imgur.com/xzipg3t..png)
+<img title="MOCKUP" src="Images/X.png" width="1000" height="500">
 
 ### Run in App
 
@@ -75,3 +76,30 @@ you can set it at every widget via widget parameter
 
 
 ### On First Run
+
+
+
+It will Downloading and Save the Following Symbols at the directory "slack-status-widget"
+
+<img title="OK" src="Symbols/OK.png" width="50">
+
+<img title="Incident" src="Symbols/Incident.png" width="50">
+
+<img title="Notice" src="Symbols/Notice.png" width="50">
+
+<img title="Maintenance" src="Symbols/Maintenance.png" width="50">
+
+<img title="Outabe" src="Symbols/Outage.png" width="50">
+
+```javascript
+iCloud Drive/
+├─ Scriptable/
+│  ├─ slack-status-widget/
+│  │  ├─ SlackBot.png
+│  │  ├─ Slack_Icon.png
+│  │  ├─ OK.png
+│  │  ├─ Incident.png
+│  │  ├─ Notice.png
+│  │  ├─ Outage.png
+│  │  ├─ Maintenance.png
+```
