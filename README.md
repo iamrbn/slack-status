@@ -1,40 +1,39 @@
-# Slack-Status Widget for Scriptable `{}`
+# Slack-Status Widget for Scriptable `{}` 
+
+<!-- [![](https://img.shields.io/badge/author-@whothefuckishrb-blue.svg?style=flat&logo=twitter)](https://twitter.com/whothefuckishrb) -->
+![](https://img.shields.io/badge/Version-1.0-purple.svg?style=flat)
 
 Script which displays the current  <img title="Slack Symbol" src="Symbols/Slack_Icon.png" width="17"> Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.
 
-<img title="SlackBot" src="Symbols/SlackBot.png" width="77">
-
-<img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
-
-This is the missing script for all power Slack users.
+This is the missing script for all power Slack user.
+<!-- <kbd> -->
+<img title="SlackBot" src="Symbols/SlackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
+<!-- </kbd> -->
 
 ## ✨ FEATURES
 
-
 ### Clickable Elements
 
-<img title="MOCKUP" src="Images/X.png" width="1000" height="500">
+<img title="header" src="Images/header.png">
 
-### Run in App
+___
 
-By running **In App** the scirpt will present a menu
-
-<img title="" src="Images/runsInApp.png" width="300">
-
-### Widget Specifications
+<!-- ### Widget Specifications
 
 Supports all sizes (_small, medium & large_)
 
-<img title="small_light_ok" src="Images/small_light_ok.PNG" width="140"> 
+<img title="Small Widget" src="Images/small_light_ok.PNG" width="140"> 
 
-<img title="medium_light_ok" src="Images/medium_light_ok.PNG" width="300"> 
+<img title="Medium Widget" src="Images/medium_light_ok.PNG" width="300"> 
+<img title="Large Widget" src="Images/large_light_ok.PNG" width="300">
 
-<img title="large_light_ok" src="Images/large_light_ok.PNG" width="300">
+___ -->
 
-The Widgets have **Dynamic Backgrounds**
+### The Widgets have a **Dynamic Background** and is available in all sizes
 
 <img title="" src="Images/dynamicBackground.png" width="500">
 
+___
 
 ### Refresh Intervall
 
@@ -42,6 +41,16 @@ you can set it at every widget via widget parameter
 
 ![](https://i.imgur.com/org7DQql..png)
 <img title="" src="Images/editWidgetParameter.png" width="300">
+
+___
+
+### Run Script in App
+
+By running the scirpt **In App** it will present a menu
+It's including the current Slack Status in top
+
+<img src="Images/runsInApp.png" width="300">
+
 
 ## ⚙️ SETUP
 
@@ -53,18 +62,19 @@ you can set it at every widget via widget parameter
 
 **If it's not filled the script runs every 30 minutes!**
 
-
 ## ⬇️ INSTALL SCRIPT / WIDGET
 
 ### Install Script
-1. Install [Scriptable for iOS `↗`](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4)
-2. Copy **each line** of the [Script Link `↗`]() - or Download [this]() scriptable-File
+1. Install [Scriptable for iOS `↗`](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4 "App Store")
+2. Copy **each line** of the [Script Link `↗`]() <!-- or Download [this](https://raw.githubusercontent.com/whothefuckishrb/slack-status/main/Status%20Slack%20Widget.scriptable) scriptable-File -->
 3. `+` Add new Script
 
 <img title="" src="Images/addNewScript.png" width="250">
 
 5. Paste into the new Script
 6. Finish
+
+___
 
 ### Add Widget to Homescreen
 1. Go to your homescreen and long tab anywhere
@@ -74,28 +84,18 @@ you can set it at every widget via widget parameter
 5. Tap the widget and choose the script, then set `"When Interacting" = "Run Script"` 
 6. Finish
 
+___
 
 ### On First Run
 
+It will Downloads and Save the Following Symbols at the directory "slack-status-widget"
 
+<img title="Slack Icon" src="Symbols/Slack_Icon.png" width="35" align="center"> <img title="OK" src="Symbols/OK.png" width="50" align="center"> <img title="Incident" src="Symbols/Incident.png" width="50" align="center"> <img title="Notice" src="Symbols/Notice.png" width="50" align="center"> <img title="Outabe" src="Symbols/Outage.png" width="50" align="center"> <img title="Maintenance" src="Symbols/Maintenance.png" width="50" align="center">
 
-It will Downloading and Save the Following Symbols at the directory "slack-status-widget"
-
-<img title="OK" src="Symbols/OK.png" width="50">
-
-<img title="Incident" src="Symbols/Incident.png" width="50">
-
-<img title="Notice" src="Symbols/Notice.png" width="50">
-
-<img title="Maintenance" src="Symbols/Maintenance.png" width="50">
-
-<img title="Outabe" src="Symbols/Outage.png" width="50">
-
-```javascript
+```
 iCloud Drive/
 ├─ Scriptable/
 │  ├─ slack-status-widget/
-│  │  ├─ SlackBot.png
 │  │  ├─ Slack_Icon.png
 │  │  ├─ OK.png
 │  │  ├─ Incident.png
@@ -103,3 +103,13 @@ iCloud Drive/
 │  │  ├─ Outage.png
 │  │  ├─ Maintenance.png
 ```
+___
+
+<a href="https://reddit.com/user/hrb7">
+<img title="Follow Me On Reddit @hrb7" src="Images/Badges/reddit_black.png" width="200">
+</a>
+
+
+<a href="https://twitter.com/whothefuckishrb">
+<img title="Follow Me On Twitter @whothefuckishrb" src="Images/Badges/twitter_black.png" width="245">
+</a>
