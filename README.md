@@ -65,8 +65,9 @@ It's including the current Slack Status in top
 ## ⬇️ INSTALL SCRIPT / WIDGET
 
 ### Install Script
-1. Install [Scriptable for iOS`↗`](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4 "App Store")
-2. Copy **each line** of the [Script`↗`](https://raw.githubusercontent.com/whothefuckishrb/slack-status/main/slack-status-widget.js) <!-- or Download [this](https://raw.githubusercontent.com/whothefuckishrb/slack-status/main/Status%20Slack%20Widget.scriptable) scriptable-File -->
+1. Install [Scriptable for iOS `↗`](https://apps.apple.com/us/app/scriptable/id1405459188?ign-mpt=uo%3D4 "App Store")
+2. Copy **each line** of the [Script `↗`](https://raw.githubusercontent.com/whothefuckishrb/slack-status/main/slack-status-widget.js)
+or download [this](https://www.icloud.com/shortcuts/b877e119b828414da5a190f868fda31e) iOS helper shortcut <!-- or Download [this](https://raw.githubusercontent.com/whothefuckishrb/slack-status/main/Status%20Slack%20Widget.scriptable) scriptable-File -->
 3. `+` Add new Script
 
 <img title="" src="Images/addNewScript.png" width="250">
