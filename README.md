@@ -111,6 +111,6 @@ ___
 </a>
 
 
-<a href="https://twitter.com/whothefuckishrb">
-<img title="Follow Me On Twitter @whothefuckishrb" src="Images/Badges/twitter_black.png" width="245">
+<a href="https://twitter.com/iamrbn_">
+<img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="245">
 </a>
