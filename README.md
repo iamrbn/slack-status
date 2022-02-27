@@ -115,5 +115,5 @@ ___
 </a>
 
 <a href="https://twitter.com/iamrbn_">
-<img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="245">
+<img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="200">
 </a>
