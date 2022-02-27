@@ -110,6 +110,9 @@ ___
 <img title="Follow Me On Reddit @hrb7" src="Images/Badges/reddit_black.png" width="200">
 </a>
 
+<a href="https://reddit.com/user/iamrbn">
+<img title="Follow Me On Reddit @iamrbn" src="Images/Badges/reddit_black_iamrbn.png" width="200">
+</a>
 
 <a href="https://twitter.com/iamrbn_">
 <img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="245">
