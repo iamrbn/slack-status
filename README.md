@@ -14,7 +14,7 @@ This is the missing script for all power Slack user.
 - Added selfupdate function ([Function](https://github.com/mvan231/Scriptable#updater-mechanism-code-example "GitHub Repo") is written by the amazing [@mvan231](https://twitter.com/mvan231 "Twitter")
 - Script thinned out in various places
 
-**Next Update**
+**Next Update**     
 push notifications for status changes
 
 ## ✨ FEATURES
