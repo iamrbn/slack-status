@@ -1,7 +1,7 @@
 # Slack-Status Widget for Scriptable `{}` 
 
 <!-- [![](https://img.shields.io/badge/author-@whothefuckishrb-blue.svg?style=flat&logo=twitter)](https://twitter.com/whothefuckishrb) -->
-![](https://img.shields.io/badge/Version-1.0-purple.svg?style=flat)
+![](https://img.shields.io/badge/Version-1.1-purple.svg?style=flat)
 
 Script which displays the current  <img title="Slack Symbol" src="Symbols/Slack_Icon.png" width="17"> Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.
 
@@ -9,6 +9,13 @@ This is the missing script for all power Slack user.
 <!-- <kbd> -->
 <img title="SlackBot" src="Symbols/SlackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
 <!-- </kbd> -->
+
+**Update Notes 1.1 (24.05.2022)**
+- Added selfupdate function ([Function](https://github.com/mvan231/Scriptable#updater-mechanism-code-example "GitHub Repo") is written by the amazing [@mvan231](https://twitter.com/mvan231 "Twitter")
+- Script thinned out in various places
+
+**Next Update**
+push notifications for status changes
 
 ## ✨ FEATURES
 
