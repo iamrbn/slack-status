@@ -10,12 +10,14 @@ This is the missing script for all power Slack user.
 <img title="SlackBot" src="Symbols/slackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
 <!-- </kbd> -->
 
-**Update Notes 1.1 (24.05.2022)**
-- Added selfupdate function ([Function](https://github.com/mvan231/Scriptable#updater-mechanism-code-example "GitHub Repo") is written by the amazing [@mvan231](https://twitter.com/mvan231 "Twitter")
-- Script thinned out in various places
+**1.2 Update Notes** (16.07.2022)
+- Added push notifications for slack status [Beta]
+- Improved the error/bad-connection widget
+- Improved/thinned out some parts of the script - saved 70 lines of code
 
-**Next Update**     
-push notifications for status changes
+**1.1 Update Notes** (24.05.2022)
+- Added selfupdate function[^1]
+- Script thinned out in various places
 
 ## ✨ FEATURES
 
@@ -23,7 +25,7 @@ push notifications for status changes
 
 <img title="header" src="Images/header.png">
 
-___
+<br>
 
 <!-- ### Widget Specifications
 
@@ -40,16 +42,15 @@ ___ -->
 
 <img title="" src="Images/dynamicBackground.png" width="500">
 
-___
+<br>
 
 ### Refresh Intervall
 
 you can set it at every widget via widget parameter
 
-![](https://i.imgur.com/org7DQql..png)
 <img title="" src="Images/editWidgetParameter.png" width="300">
 
-___
+<br>
 
 ### Run Script in App
 
@@ -58,6 +59,27 @@ It's including the current Slack Status in top
 
 <img src="Images/runsInApp.png" width="300">
 
+<br>
+
+### Error / Bad Internet Connection
+
+When the script cannot connect to the Slack API it will shown the Error Widget.
+
+<img title="Error/Bad Connection - Medium Widget" src="Images/errorWidgetMedium.png" width="350">
+
+<br>
+
+### Push Notifications ` [Beta] `
+
+You'll get push-notifications if the status of slack changes.
+
+```javascript
+const getStatusNotifications = true;
+```
+<img src="Images/getOKNotification.png" width="450">
+<img src="Images/getIssueNotification.PNG" width="450">
+
+<br>
 
 ## ⚙️ SETUP
 
@@ -125,3 +147,5 @@ ___
 <a href="https://twitter.com/iamrbn_">
 <img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="200">
 </a>
+
+[^1]:[Function](https://github.com/mvan231/Scriptable#updater-mechanism-code-example "GitHub Repo") is written by the amazing [@mvan231](https://twitter.com/mvan231 "Twitter")
