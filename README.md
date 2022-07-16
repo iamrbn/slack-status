@@ -1,7 +1,7 @@
 # Slack-Status Widget for Scriptable `{}` 
 
 <!-- [![](https://img.shields.io/badge/author-@whothefuckishrb-blue.svg?style=flat&logo=twitter)](https://twitter.com/whothefuckishrb) -->
-![](https://img.shields.io/badge/Version-1.1-purple.svg?style=flat)
+![](https://img.shields.io/badge/dynamic/json?color=purple&label=Script%20Version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fiamrbn%2Fslack-status%2Fmain%2Fslack-status-widget.json)
 
 Script which displays the current  <img title="Slack Symbol" src="Symbols/slackIcon.png" width="17"> Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.
 
