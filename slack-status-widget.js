@@ -1,11 +1,11 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: purple; icon-glyph: hashtag;
-// Script is written by iamrbn - GitHub (u/iamrbn → Reddit / iamrbn_ → Twitter)
-// Script-URL = https://github.com/iamrbn/slack-status
+// Script is written by iamrbn - GitHub (u/iamrbn → Reddit, iamrbn_ → Twitter)
+// Script = https://github.com/iamrbn/slack-status
 
 const scriptURL = 'https://raw.githubusercontent.com/iamrbn/slack-status/main/slack-status-widget.js'
-const scriptVersion = 1.1
+const scriptVersion = '1.2'
 const bgColor = Color.dynamic(Color.white(), new Color("#481349"));
 const txtColor = Color.dynamic(Color.black(), Color.white());
 const newDate = new Date();
@@ -13,141 +13,150 @@ const dateFormatter = new DateFormatter();
 const widgetSize = config.widgetFamily;
 const fm = FileManager.iCloud();
 const dir = fm.joinPath(fm.documentsDirectory(), "slack-status-widget");
-if (!fm.fileExists(dir))fm.createDirectory(dir);
-
+if (!fm.fileExists(dir)) fm.createDirectory(dir);
+const getStatusNotifications = true;
+const nKey = Keychain
 const top = Color.dynamic(new Color('#ffffff'), new Color('#4E1E54'));
 const middle = Color.dynamic(new Color('#EDEDED'), new Color('#481C4D'));
 const bottom = Color.dynamic(new Color('#D4D4D4'), new Color('#441A49'));
-const bgGradient = new LinearGradient()
-      bgGradient.locations = [0, 0.4, 1]
-      bgGradient.colors = [top, middle, bottom]
+const bgGradient = new LinearGradient();
+      bgGradient.locations = [0, 0.4, 1];
+      bgGradient.colors = [top, middle, bottom];     
+
+let nParameter = await args.notification;
+let refreshInt = await args.widgetParameter;
+if (refreshInt == null) refreshInt = 30; //in minutes
+
+let api;
+try {    
+    api = await new Request('https://status.slack.com/api/v2.0.0/current').loadJSON(); 
+      noInternet = false;
+      emoji = " ✅ ";
+      if (api.status != "ok") {
+      dateCreated = api.date_created;
+      dateUpdated = api.date_updated;
+      dataID = api.active_incidents[0].id;
+      dateCreated2 = api.active_incidents[0].date_created;
+      dateUpdated2 = api.active_incidents[0].date_updated;
+      dataTitle = api.active_incidents[0].title;
+      dataType = api.active_incidents[0].type;
+      dataStatus = api.active_incidents[0].status;
+      dataURL = api.active_incidents[0].url;
+      dataServices = api.active_incidents[0].services;
+      dateCreatedBody = api.active_incidents[0].notes[0].date_created;
+      dataBody = api.active_incidents[0].notes[0].body;
+
+  if (dataType == "incident" || "active") emoji = " ⚠️ ";
+  else if (dataType == "outage") emoji = " ⛔️ ";
+  else if (dataType == "notice") emoji = " 🚩 ";
+  else if (dataType == "maintenance") emoji = " 🔧 ";
+  };
+} catch (e) {
+    logError(e);
+    noInternet = true;
+    if (config.runsInApp) await presentAlert(String(e));
+};
       
-api = await getFromAPI()
-logWarning(JSON.stringify(api, null, 2))
+if (config.runsInApp && !noInternet) {
+	await presentMenu();
+} else if (config.runsInWidget) {
+  switch (widgetSize) {
+    	case "small":
+        if (noInternet) widget = await createErrorWidget(10);
+        else widget = await createSmallWidget();
+	break;
+    	case "medium":
+        if (noInternet) widget = await createErrorWidget(20);
+        else widget = await createMediumWidget();
+	break;
+    	case "large":
+        if (noInternet) widget = await createErrorWidget(25);
+    	   else widget = await createLargeWidget();
+	break;
+    	default:
+             widget = await createErrorWidget();
+	}
+	Script.setWidget(widget);
+} else if (config.runsInNotification) QuickLook.present(await getImageFor(nParameter.userInfo.imgName));
 
-var emoji = " ✅ ";
-if (api.status != "ok") {
-	this.dateCreated = api.date_created;
-	this.dateUpdated = api.date_updated;
-	this.dataID = api.active_incidents[0].id;
-	this.dateCreated2 = api.active_incidents[0].date_created;
-	this.dateUpdated2 = api.active_incidents[0].date_updated;
-	this.dataTitle = api.active_incidents[0].title;
-	this.dataType = api.active_incidents[0].type;
-	this.dataStatus = api.active_incidents[0].status;
-	this.dataURL = api.active_incidents[0].url;
-	this.dataServices = api.active_incidents[0].services;
-	this.dateCreatedBody = api.active_incidents[0].notes[0].date_created;
-	this.dataBody = api.active_incidents[0].notes[0].body;
+if (!nKey.contains("current_issue")) nKey.set("current_issue", api.date_updated);
+log(nKey.get("current_issue"));
+if (getStatusNotifications) {
+if (nKey.get("current_issue") != api.date_updated && api.status != 'ok') createIssueNotification();
+else if (nKey.get("current_issue") != api.date_updated && api.status == 'ok') createOkNotification();
+};
 
-	if (dataType == "incident")emoji = " ⚠️ ";
-	else if (dataType == "outage")emoji = " ⛔️ ";
-	else if (dataType == "notice")emoji = " 🚩 ";
-	else if (dataType == "maintenance")emoji = " 🔧 ";
-}
 
 // ############ SETUP SMALL WIDGET ############
-async function createSmallWidget(refreshInt) {
+async function createSmallWidget() {
   let widget = new ListWidget();
-  var widgetURL = "https://status.slack.com"
-      widget.url = widgetURL;
+      widget.url = "https://status.slack.com";
       widget.backgroundGradient = bgGradient
-      widget.setPadding(5, 1, 3, 1);
-  let refreshDate = Date.now() + 1000 * 60 * refreshInt;
-      widget.refreshAfterDate = new Date(refreshDate);
+      widget.refreshAfterDate = new Date(Date.now() + 1000 * 60 * refreshInt);
 
-  let titleStack = widget.addStack();
-
-      titleStack.addSpacer(7);
-
-  let img = await getImageFor("slackIcon");
-  let AppIcon = titleStack.addImage(img).imageSize = new Size(20, 20);
-
-      titleStack.addSpacer(7);
-      
-  let title = titleStack.addText("Slack Status");
-      title.font = new Font("Futura-Medium", 17);
+  await createHeader(widget, 20, 17)
 
       widget.addSpacer(3);
 
-  let statusImageStack = widget.addStack();
-      statusImageStack.centerAlignContent();
-      statusImageStack.setPadding(0, 37, 0, 0);
-
 	if (api.status == 'ok') {
-		StatusImage = statusImageStack.addImage(await getImageFor(api.status)).imageSize = new Size(77, 77);;
-		statusTitle = widget.addText("is up and running 🚀");
-		widget.addSpacer(5);
-		statusTitle.font = Font.lightSystemFont(12);
-		statusTitle.centerAlignText();
-		widget.addSpacer(0);
+		statusImage = widget.addImage(await getImageFor(api.status));
+        statusTitle = widget.addText("is up and running");
+		widget.addSpacer();
 	} else {
-		StatusImage = statusImageStack.addImage(await getImageFor(dataType)).imageSize = new Size(77, 77);
-
+		statusImage = widget.addImage(await getImageFor(dataType));
 		headline = widget.addText("Trouble with");
 		headline.textColor = Color.red();
 		headline.font = Font.semiboldSystemFont(11);
 		headline.centerAlignText();
 
-     statusTitle = widget.addText(String(dataServices).replace(" ", "\n"));
-     statusTitle.textColor = Color.red();
-     statusTitle.font = Font.semiboldSystemFont(12);
-     statusTitle.lineLimit = 3;
-     statusTitle.minimumScaleFactor = 0.8;
-     statusTitle.centerAlignText();
-
-		widget.addSpacer(0);
-	}
-
+        statusTitle = widget.addText(String(dataServices).replace(" ", "\n"));
+        statusTitle.textColor = Color.red();
+        statusTitle.lineLimit = 3;
+        statusTitle.minimumScaleFactor = 0.8;
+	};
+  
+        statusImage.imageSize = new Size(77, 77);  
+        statusImage.centerAlignImage();
+  
+        statusTitle.font = Font.lightSystemFont(12);  
+        statusTitle.centerAlignText();
 
   let uCheck = await updateCheck(scriptVersion)
   if (uCheck.version > scriptVersion) {
-      line7 = widget.addText(`Update ${uCheck.version} Available!`)
-      line7.font = Font.lightRoundedSystemFont(11)
-      line7.centerAlignText()
-      line7.textColor = Color.red()
+      updateInfo = widget.addText(`Update ${uCheck.version} Available!`)
+      updateInfo.font = Font.lightRoundedSystemFont(11)
+      updateInfo.centerAlignText()
+      updateInfo.textColor = Color.red()
       widgetURL = 'https://github.com/iamrbn/slack-status/tree/main'
-      widget.url = widgetURL
+      widget.url = "https://status.slack.com"
 }
 
       dateFormatter.useShortTimeStyle();
-  let footer = widget.addText("Last Refresh " + dateFormatter.string(newDate));
+  let footer = widget.addText("Last Update " + dateFormatter.string(new Date()));
       footer.font = Font.mediumSystemFont(9);
       footer.textOpacity = 0.16;
       footer.centerAlignText();
 
 	return widget;
-}
+};
 
 // ########### SETUP MEDIUM WIDGET ###########
-async function createMediumWidget(refreshInt) {
+async function createMediumWidget() {
   let widget = new ListWidget();
       widget.setPadding(10, 10, 5, 10);
       widget.backgroundGradient = bgGradient
-  let refreshDate = Date.now() + 1000 * 60 * refreshInt;
-      widget.refreshAfterDate = new Date(refreshDate);
+      widget.refreshAfterDate = new Date(Date.now() + 1000 * 60 * refreshInt);
 
-  let titleStack = widget.addStack();
-      titleStack.addSpacer(2);
-      titleStack.centerAlignContent()
+  await createHeader(widget, 25, 25);
 
-  let img = await getImageFor("slackIcon");
-  let AppIcon = titleStack.addImage(img).imageSize = new Size(22, 22);
-      AppIcon.url = "slack://";
-
-	titleStack.addSpacer(7);
-
-  let t1 = titleStack.addText("Slack Status");
-      t1.font = new Font("Futura-Medium", 19);
-      t1.url = "slack://";
-      
   let uCheck = await updateCheck(scriptVersion)
      if (uCheck.version > scriptVersion) {
-      titleStack.addSpacer(7)
+      titleStack.addSpacer(10)
       line7 = titleStack.addText(`Update ${uCheck.version} Available!`)
-      line7.font = Font.regularRoundedSystemFont(17)
+      line7.font = Font.regularRoundedSystemFont(10)
       line7.url = 'https://github.com/iamrbn/slack-status/tree/main'
       line7.textColor = Color.red()
+      line7.leftAlignText()
       widget.url = 'https://github.com/iamrbn/slack-status/tree/main'
 }
 
@@ -174,7 +183,6 @@ async function createMediumWidget(refreshInt) {
 
       leftStack.addSpacer(7);
 
-      linkSymbol = SFSymbol.named("safari");
       linkStack = leftStack.addStack();
       linkStack.centerAlignContent();
       linkStack.url = "https://slack.com/help/articles/205138367-Troubleshoot-connection-issues";
@@ -184,7 +192,7 @@ async function createMediumWidget(refreshInt) {
       linkElement.font = Font.lightSystemFont(11);
       linkElement.textOpacity = 0.4;
 
-      linkSymbolElement = linkStack.addImage(linkSymbol.image);
+      linkSymbolElement = linkStack.addImage(SFSymbol.named("safari").image);
       linkSymbolElement.imageSize = new Size(12, 12);
       linkSymbolElement.tintColor = Color.gray();
       linkSymbolElement.imageOpacity = 0.2;
@@ -215,12 +223,11 @@ async function createMediumWidget(refreshInt) {
 
 		leftStack.addSpacer(3);
 
-     linkSymbol = SFSymbol.named("info.circle");
      linkStack = leftStack.addStack();
      linkStack.centerAlignContent();
      linkStack.url = dataURL;
   
-     linkSymbolElement = linkStack.addImage(linkSymbol.image);
+     linkSymbolElement = linkStack.addImage(SFSymbol.named("info.circle").image);
      linkSymbolElement.imageSize = new Size(9, 9);
      linkSymbolElement.tintColor = Color.blue();
   
@@ -244,28 +251,14 @@ async function createMediumWidget(refreshInt) {
 
 
 // ############ SETUP LARGE WIDGET ##############
-async function createLargeWidget(refreshInt) {
+async function createLargeWidget() {
   let widget = new ListWidget();
       widget.backgroundGradient = bgGradient;
-      widget.setPadding(10, 15, 5, 10);
-  var refreshDate = Date.now() + 1000 * 60 * refreshInt;
-      widget.refreshAfterDate = new Date(refreshDate);
-
-	// header of the widget
-  let titleStack = widget.addStack();
-      titleStack.centerAlignContent();
-
-  var img = await getImageFor("slackIcon");
-  let AppIcon = titleStack.addImage(img);
-      AppIcon.imageSize = new Size(25, 25);
-      AppIcon.url = "slack://";
-
-    	 titleStack.addSpacer(7);
-
-  let t1 = titleStack.addText("Slack Status");
-      t1.font = new Font("Futura-Medium", 23);
-      t1.url = "slack://";
+      widget.setPadding(15, 15, 5, 15);
+      widget.refreshAfterDate = new Date(Date.now() + 1000 * 60 * refreshInt);
       
+      await createHeader(widget, 25, 23)
+
   let uCheck = await updateCheck(scriptVersion)
      if (uCheck.version > scriptVersion) {
       titleStack.addSpacer(7)
@@ -292,7 +285,6 @@ async function createLargeWidget(refreshInt) {
 
 		widget.addSpacer(5);
 
-		let linkSymbol = SFSymbol.named("safari");
 		let linkStack = widget.addStack();
 		linkStack.setPadding(0, 103, 0, 0);
 		linkStack.centerAlignContent();
@@ -303,7 +295,7 @@ async function createLargeWidget(refreshInt) {
 		linkElement.font = Font.lightSystemFont(11);
 		linkElement.textOpacity = 0.4;
 
-		let linkSymbolElement = linkStack.addImage(linkSymbol.image);
+		let linkSymbolElement = linkStack.addImage(SFSymbol.named("safari").image);
 		linkSymbolElement.imageSize = new Size(12, 12);
 		linkSymbolElement.tintColor = Color.gray();
 		linkSymbolElement.imageOpacity = 0.2;
@@ -332,7 +324,6 @@ async function createLargeWidget(refreshInt) {
 		apiBody.textColor = Color.red();
 		apiBody.centerAlignText();
 
-     linkSymbol = SFSymbol.named("info.circle");
     	linkStack = widget.addStack();
 		linkStack.centerAlignContent();
 		linkStack.setPadding(0, 50, 0, 0);
@@ -344,170 +335,120 @@ async function createLargeWidget(refreshInt) {
 
 		linkStack.addSpacer(3);
 
-		linkSymbolElement = linkStack.addImage(linkSymbol.image);
+		linkSymbolElement = linkStack.addImage(SFSymbol.named("info.circle").image);
 		linkSymbolElement.imageSize = new Size(12, 12);
 		linkSymbolElement.tintColor = Color.blue();
 	}
 
 	widget.addSpacer();
-
-	//List of the single Services
-  let mainStack = widget.addStack();
   
-  let leftStack = mainStack.addStack();
-      leftStack.layoutVertically();
-      
-  let rightStack = mainStack.addStack();
-      rightStack.layoutVertically();
+  await addString(widget, "Login/SSO", "Connections");
+  await addString(widget, "Messaging", "Link Previews");
+  await addString(widget, "Posts/Files", "Notifications");
+  await addString(widget, "Calls", "Search");
+  await addString(widget, "Apps/APIs/\nIntegrations", "Workspace/Org/\nAdministration");
 
-	// ### Line Number 1 ###
-  let line1 = widget.addStack();
-  let loginStack = line1.addStack();
-  let login = loginStack.addText("Login/SSO");
-      login.font = Font.lightSystemFont(12);
-      loginStack.addSpacer(54);
-   if (api.status != "ok" && dataServices.includes("Login/SSO")) statusIcon = loginStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
- else statusIcon = loginStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	loginStack.addSpacer();
-
-	let ConnectionsStack = line1.addStack();
-	let Connections = ConnectionsStack.addText("Connections");
-       Connections.font = Font.lightSystemFont(12);
-       ConnectionsStack.addSpacer(48);
-    if (api.status != "ok" && dataServices.includes("Connections")) statusIcon = ConnectionsStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-  else statusIcon = ConnectionsStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	ConnectionsStack.addSpacer();
-
-	// ### Line Number 2 ###
-	let line2 = widget.addStack();
-	let MessagingStack = line2.addStack();
-	let Messaging = MessagingStack.addText("Messaging");
-       Messaging.font = Font.lightSystemFont(12);
-	MessagingStack.addSpacer(52);
-   if (api.status != "ok" && dataServices.includes("Messaging")) statusIcon = MessagingStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-  else statusIcon = MessagingStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	MessagingStack.addSpacer();
-
-	let LinkPreviewStack = line2.addStack();
-	let LinkPreview = LinkPreviewStack.addText("Link Previews");
-	LinkPreview.font = Font.lightSystemFont(12);
-	LinkPreviewStack.addSpacer(43);
-    if (api.status != "ok" && dataServices.includes("Link Previews")) statusIcon = LinkPreviewStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-    else statusIcon = LinkPreviewStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	LinkPreviewStack.addSpacer();
-
-	// ### Line Number 3 ###
-	let line3 = widget.addStack();
-	let PostsFilesStack = line3.addStack();
-	let PostsFiles = PostsFilesStack.addText("Posts/Files");
-	PostsFiles.font = Font.lightSystemFont(12);
-	PostsFilesStack.addSpacer(53);
-    if (api.status != "ok" && dataServices.includes("Posts/Files")) statusIcon = PostsFilesStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-    else statusIcon = PostsFilesStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	PostsFilesStack.addSpacer();
-
-	let NotificationsStack = line3.addStack();
-	let Notifications = NotificationsStack.addText("Notifications");
-	Notifications.font = Font.lightSystemFont(12);
-	NotificationsStack.addSpacer(48);
-    if (api.status != "ok" && dataServices.includes("Notifications")) statusIcon = NotificationsStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-    else statusIcon = NotificationsStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-    
-	NotificationsStack.addSpacer();
-
-	// ### Line Number 4 ###
-	let line4 = widget.addStack();
-	let CallsStack = line4.addStack();
-	let Calls = CallsStack.addText("Calls");
-	Calls.font = Font.lightSystemFont(12);
-	CallsStack.addSpacer(85);
-    if (api.status != "ok" && dataServices.includes("Calls")) statusIcon = CallsStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-    else statusIcon = CallsStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	CallsStack.addSpacer();
-
-	let SearchStack = line4.addStack();
-	let Search = SearchStack.addText("Search");
-       Search.font = Font.lightSystemFont(12);
-       SearchStack.addSpacer(79);
-   if (api.status != "ok" && dataServices.includes("Search")) statusIcon = SearchStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-   else statusIcon = SearchStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-    
-	SearchStack.addSpacer();
-
-	// ### Line Number 5 ###
-	let line5 = widget.addStack();
-	let AppsStack = line5.addStack();
-	let Apps = AppsStack.addText("Apps/APIs/\nIntegrations");
-	Apps.font = Font.lightSystemFont(12);
-	AppsStack.addSpacer(46);
-    if (api.status != "ok" && dataServices.includes("Apps/Integrations/APIs")) statusIcon = AppsStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-    else statusIcon = AppsStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	AppsStack.addSpacer();
-
-  let WorkspaceStack = line5.addStack();
-  let Workspace = WorkspaceStack.addText("Workspace/Org/\nAdministration");
-      Workspace.font = Font.lightSystemFont(12);
-      WorkspaceStack.addSpacer(29);
-    if (api.status != "ok" && dataServices.includes("Workspace/Org Administration")) statusIcon = WorkspaceStack.addImage(await getImageFor(dataType)).imageSize = new Size(20, 20);
-    else statusIcon = WorkspaceStack.addImage(await getImageFor('ok')).imageSize = new Size(20, 20);
-
-	WorkspaceStack.addSpacer();
 	widget.addSpacer();
 
 	// shows the last widget update
 	dateFormatter.useMediumDateStyle();
 	dateFormatter.useShortTimeStyle();
-
   let footer = widget.addText("Last Widget Refresh " + dateFormatter.string(newDate));
       footer.font = Font.mediumSystemFont(9);
       footer.textOpacity = 0.16;
       footer.centerAlignText();
 
 	return widget;
-}
+};
 
-async function createErrorWidget() {
-  let widget = new ListWidget();
-      widget.backgroundGradient = bgGradient;
-  let wTitle = widget.addText("No API Response")
-  let wSubtitle = widget.addText("Please ckeck your Internet Connection")
-  
-  return widget; 
-}
+async function createErrorWidget(pddng) {
+  let errWidget = new ListWidget();
+      errWidget.setPadding(pddng, pddng, pddng, pddng);
+      errWidget.backgroundGradient = bgGradient;
+      errWidget.addImage(await getImageFor("sadSlackBot-badConnection")).cornerRadius = 20;
+      errWidget.addSpacer();
+      wTitle = errWidget.addText("No API Response").font = Font.headline();
+      wSubtitle = errWidget.addText("Please ckeck your internet connection").font = Font.subheadline();
+  return errWidget;
+};
 
 //=============================================
 //============== FUNCTION AREA ================
 //=============================================
 
-// Get from API
-async function getFromAPI() {
-let api;
-try {
-let url = 'https://status.slack.com/api/v2.0.0/current'
+function createIssueNotification() {
+ let notify = new Notification();
+     notify.title = `Slack ${api.active_incidents[0].type}`.toUpperCase();
+     notify.subtitle = `Trouble with: ${api.active_incidents[0].services}`;
+     notify.openURL = api.active_incidents[0].url;
+     notify.body = api.active_incidents[0].notes[0].body;
+     notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com");
+     notify.addAction("Show " + api.active_incidents[0].type + " ID " + api.active_incidents[0].id, api.active_incidents[0].url, true);
+     notify.identifier = `ID_${api.active_incidents[0].id}`;
+     notify.threadIdentifier = Script.name();
+     notify.preferredContentHeight = 77;
+     notify.scriptName = Script.name();
+     notify.userInfo = {"imgName":dataType};
+     notify.schedule();
+    
+  nKey.set("current_issue", api.date_updated);
+};
 
-let req = new Request(url);
-    api = await req.loadJSON();
-} catch (e) {
-  let errWidget = await createErrorWidget()
-  await errWidget.presentSmall()
-  }
- return api;
-}
+function createOkNotification() {
+ let notify = new Notification();
+     notify.title = "Slack is now running again";
+     notify.subtitle = "Trouble has been solved";
+     notify.identifier = api.date_updated;
+     notify.threadIdentifier = Script.name();
+     notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com");
+     notify.scriptName = Script.name();
+     notify.preferredContentHeight = 77;
+     notify.userInfo = {"imgName":'ok'};
+     notify.schedule();
+    
+  nKey.set("current_issue", api.date_updated);
+};
 
-// widget refresh interval
-async function refreshAfter() {
-	let refreshInt = await args.widgetParameter;
-	if (refreshInt == null) {
-		refreshInt = 30; //min
-	}
-	return refreshInt;
+
+async function createHeader(w, iSize, fSize) {
+   headerStack = w.addStack();
+   headerStack.centerAlignContent();
+   headerStack.url = "slack://";
+   headerStack.spacing = 7
+
+   headerIcon = headerStack.addImage(await getImageFor("slackIcon")).imageSize = new Size(iSize, iSize);
+   //headerStack.addSpacer(7);
+   headerTitle = headerStack.addText("Slack Status").font = new Font("Futura-Medium", fSize);
+};
+
+async function addString(widget, leftText, rightText) {
+  let line = widget.addStack();
+      line.spacing = 15;
+
+  let firstStack = line.addStack();
+      firstStack.centerAlignContent()
+      firstStack.addText(leftText).font = Font.lightSystemFont(12);
+      firstStack.addSpacer();
+  if (api.status != 'ok' && dataServices.includes(leftText)) image = dataType;
+  else image = 'ok';
+      firstStack.addImage(await getImageFor(image)).imageSize = new Size(20, 20)
+      
+  let secondStack = line.addStack();
+      secondStack.centerAlignContent()
+      secondStack.addText(rightText).font = Font.lightSystemFont(12);
+      secondStack.addSpacer();
+  if (api.status != 'ok' && dataServices.includes(rightText)) image = dataType;
+  else image = 'ok';
+      secondStack.addImage(await getImageFor(image)).imageSize = new Size(20, 20);
+};
+
+async function presentAlert(message) {
+  let alert = new Alert();
+      alert.title = "No Api Response";
+      alert.message = message;
+      alert.addAction("OK");
+      idx = await alert.present();
+  //if (idx == 0) Safari.open("prefs:root");
 }
 
 // LOADING AND SAVING IMAGES FROM URL TO FOLDER
@@ -524,49 +465,31 @@ async function saveImages() {
 			fm.writeImage(img_path, image);
 		}
 	}
-}
+};
 
 async function getImageFor(name) {
-	img_path = fm.joinPath(dir, name + '.png')
-	await fm.downloadFileFromiCloud(img_path);
-	img = await fm.readImage(img_path);
+	imgPath = fm.joinPath(dir, name + '.png')
+	await fm.downloadFileFromiCloud(imgPath);
+	img = await fm.readImage(imgPath);
   return img;
-}
+};
 
 // Runtime images:
 await saveImages();
 try {saveData(data)}
 catch(e) {}
 
-if (config.runsInApp) {
-	await presentMenu();
-} else if (config.runsInWidget) {
-	switch (widgetSize) {
-    		case "small":
-			widget = await createSmallWidget();
-			break;
-    		case "medium":
-			widget = await createMediumWidget();
-			break;
-    		case "large":
-			widget = await createLargeWidget();
-			break;
-    		default:
-			widget = await createMediumWidget();
-	}
-	Script.setWidget(widget);
-}
-
 async function presentMenu() {
-	let alert = new Alert(api);
-	alert.title = "Slack Status Widget";
-	alert.message = emoji + ' "' + api.status.toUpperCase() + '" ' + emoji;
+	let alert = new Alert();
+	alert.title = "Slack Status";
+	alert.message = emoji + api.status.toUpperCase() + emoji;
 	alert.addAction("Small");
 	alert.addAction("Medium");
 	alert.addAction("Large");
+     //alert.addAction("Error Widget");
 	alert.addDestructiveAction("Web Dashboard ↗");
 	alert.addCancelAction("Cancel");
-	let idx = await alert.presentSheet(api);
+	let idx = await alert.present();
 	if (idx == 0) {
 		let widget = await createSmallWidget();
 		await widget.presentSmall();
@@ -576,10 +499,11 @@ async function presentMenu() {
 	} else if (idx == 2) {
 		let widget = await createLargeWidget();
 		await widget.presentLarge();
-	} else if (idx == 3) {
-		Safari.openInApp("https://status.slack.com");
-	}
-}
+   } else if (idx == 3) {
+     widget = await createErrorWidget(20);
+     await widget.presentMedium();
+	} else if (idx == 4) Safari.openInApp("https://status.slack.com", false);
+};
 
 async function updateCheck(version) {
   let uC;
@@ -588,7 +512,7 @@ async function updateCheck(version) {
     uC = await updateCheck.loadJSON()
  } catch (e) {return log(e)}
   
-  log(uC)
+  log(uC);
   
   let needUpdate = false
   if (uC.version != version) {
@@ -613,7 +537,7 @@ async function updateCheck(version) {
   } else {log("up to date")}
 
   return needUpdate, uC;
-}
+};
 
 //============================================
 //============== END OF SCRIPT ===============
