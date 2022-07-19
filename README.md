@@ -10,6 +10,9 @@ This is the missing script for all power Slack user.
 <img title="SlackBot" src="Symbols/slackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
 <!-- </kbd> -->
 
+**1.2.1 Update Notes** (19.07.2022)
+- Fixed a problem where the widget displays an error when an open update is pending. Now it should work correctly again.
+
 **1.2 Update Notes** (16.07.2022)
 - Added push notifications for slack status [Beta]
 - Improved the error/bad-connection widget
