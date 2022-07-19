@@ -5,7 +5,7 @@
 // Script = https://github.com/iamrbn/slack-status
 
 const scriptURL = 'https://raw.githubusercontent.com/iamrbn/slack-status/main/slack-status-widget.js'
-const scriptVersion = '1.2'
+const scriptVersion = '1.1'
 const bgColor = Color.dynamic(Color.white(), new Color("#481349"));
 const txtColor = Color.dynamic(Color.black(), Color.white());
 const newDate = new Date();
@@ -15,7 +15,7 @@ const fm = FileManager.iCloud();
 const dir = fm.joinPath(fm.documentsDirectory(), "slack-status-widget");
 if (!fm.fileExists(dir)) fm.createDirectory(dir);
 const getStatusNotifications = true;
-const nKey = Keychain
+const nKey = Keychain;
 const top = Color.dynamic(new Color('#ffffff'), new Color('#4E1E54'));
 const middle = Color.dynamic(new Color('#EDEDED'), new Color('#481C4D'));
 const bottom = Color.dynamic(new Color('#D4D4D4'), new Color('#441A49'));
@@ -149,17 +149,6 @@ async function createMediumWidget() {
 
   await createHeader(widget, 25, 25);
 
-  let uCheck = await updateCheck(scriptVersion)
-     if (uCheck.version > scriptVersion) {
-      titleStack.addSpacer(10)
-      line7 = titleStack.addText(`Update ${uCheck.version} Available!`)
-      line7.font = Font.regularRoundedSystemFont(10)
-      line7.url = 'https://github.com/iamrbn/slack-status/tree/main'
-      line7.textColor = Color.red()
-      line7.leftAlignText()
-      widget.url = 'https://github.com/iamrbn/slack-status/tree/main'
-}
-
 	widget.addSpacer();
 
   let mainStack = widget.addStack();
@@ -238,6 +227,16 @@ async function createMediumWidget() {
      linkElement.font = new Font("PingFangTC-Thin", 10);
 	}
 
+  let uCheck = await updateCheck(scriptVersion)
+  if (uCheck.version > scriptVersion) {
+      updateInfo = widget.addText(`Update ${uCheck.version} Available!`)
+      updateInfo.font = Font.regularRoundedSystemFont(14)
+      updateInfo.url = 'https://github.com/iamrbn/slack-status/tree/main'
+      updateInfo.textColor = Color.red()
+      updateInfo.centerAlignText()
+      widget.url = 'https://github.com/iamrbn/slack-status/tree/main'
+}
+
       dateFormatter.useShortDateStyle();
       dateFormatter.useShortTimeStyle();
 
@@ -261,11 +260,12 @@ async function createLargeWidget() {
 
   let uCheck = await updateCheck(scriptVersion)
      if (uCheck.version > scriptVersion) {
-      titleStack.addSpacer(7)
-      line7 = titleStack.addText(`Update ${uCheck.version} Available!`)
-      line7.font = Font.regularRoundedSystemFont(14)
-      line7.url = 'https://github.com/iamrbn/slack-status/tree/main'
-      line7.textColor = Color.red()
+      widget.addSpacer(7)
+      updateInfo = widget.addText(`Update ${uCheck.version} Available!`)
+      updateInfo.font = Font.regularRoundedSystemFont(14)
+      updateInfo.url = 'https://github.com/iamrbn/slack-status/tree/main'
+      updateInfo.textColor = Color.red()
+      updateInfo.centerAlignText()
       widget.url = 'https://github.com/iamrbn/slack-status/tree/main'
 }
       widget.addSpacer();
@@ -417,7 +417,6 @@ async function createHeader(w, iSize, fSize) {
    headerStack.spacing = 7
 
    headerIcon = headerStack.addImage(await getImageFor("slackIcon")).imageSize = new Size(iSize, iSize);
-   //headerStack.addSpacer(7);
    headerTitle = headerStack.addText("Slack Status").font = new Font("Futura-Medium", fSize);
 };
 
@@ -486,7 +485,6 @@ async function presentMenu() {
 	alert.addAction("Small");
 	alert.addAction("Medium");
 	alert.addAction("Large");
-     //alert.addAction("Error Widget");
 	alert.addDestructiveAction("Web Dashboard ↗");
 	alert.addCancelAction("Cancel");
 	let idx = await alert.present();
@@ -499,10 +497,7 @@ async function presentMenu() {
 	} else if (idx == 2) {
 		let widget = await createLargeWidget();
 		await widget.presentLarge();
-   } else if (idx == 3) {
-     widget = await createErrorWidget(20);
-     await widget.presentMedium();
-	} else if (idx == 4) Safari.openInApp("https://status.slack.com", false);
+	} else if (idx == 3) Safari.openInApp("https://status.slack.com", false);
 };
 
 async function updateCheck(version) {
