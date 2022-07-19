@@ -5,7 +5,7 @@
 // Script = https://github.com/iamrbn/slack-status
 
 const scriptURL = 'https://raw.githubusercontent.com/iamrbn/slack-status/main/slack-status-widget.js'
-const scriptVersion = '1.1'
+const scriptVersion = '1.2.1'
 const bgColor = Color.dynamic(Color.white(), new Color("#481349"));
 const txtColor = Color.dynamic(Color.black(), Color.white());
 const newDate = new Date();
