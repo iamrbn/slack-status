@@ -1,4 +1,4 @@
 {
-    "version": "1.2",
-    "notes":"• Added push notifications for slack status [Beta]\n• Improved the error/bad-connection widget\n• Improved/thinned some parts of the script - saved 70 lines of code."
+    "version": "1.2.1",
+    "notes":"• Fixed a problem where the widget displays an error when an open update is pending. Now it should work correctly again."
 }
