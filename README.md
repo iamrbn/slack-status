@@ -1,11 +1,14 @@
-# Slack-Status Widget for Scriptable `{}` 
+# <img title="Slack Symbol" src="Symbols/slackIcon.png" width="27"> Slack-Status Widget for Scriptable
 
 <!-- [![](https://img.shields.io/badge/author-@whothefuckishrb-blue.svg?style=flat&logo=twitter)](https://twitter.com/whothefuckishrb) -->
 ![](https://img.shields.io/badge/dynamic/json?color=purple&label=Script%20Version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fiamrbn%2Fslack-status%2Fmain%2Fslack-status-widget.json)
 
-Script which displays the current  <img title="Slack Symbol" src="Symbols/slackIcon.png" width="17"> Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.
+Script which displays the current Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.    
+This is the missing widget for all power users of slack.
 
-This is the missing script for all power Slack user.
+TL;DR: Download it [here](https://iamrbn.github.io/slack-status/Status%20Slack%20Widget.scriptable) fast as possible.
+
+
 <!-- <kbd> -->
 <img title="SlackBot" src="Symbols/slackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
 <!-- </kbd> -->
