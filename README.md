@@ -6,8 +6,10 @@
 Script which displays the current Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.    
 This is the missing widget for all power users of slack.
 
+<!--
 TL;DR: Download it [here](https://iamrbn.github.io/slack-status/Status%20Slack%20Widget.scriptable) fast as possible.
-
+https://fifithebulldog.github.io/scriptable-testflight-watcher/TestFlight%20Watcher.scriptable
+-->
 
 <!-- <kbd> -->
 <img title="SlackBot" src="Symbols/slackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
