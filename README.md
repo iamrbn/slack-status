@@ -145,15 +145,21 @@ iCloud Drive/
 ___
 
 <a href="https://reddit.com/user/hrb7">
-<img title="Follow Me On Reddit @hrb7" src="Images/Badges/reddit_black.png" width="200">
+<img title="Follow Me On Reddit @hrb7" src="Images/Badges/reddit_black.png" width="130">
 </a>
 
 <a href="https://reddit.com/user/iamrbn">
-<img title="Follow Me On Reddit @iamrbn" src="Images/Badges/reddit_black_iamrbn.png" width="200">
+<img title="Follow Me On Reddit @iamrbn" src="Images/Badges/reddit_black_iamrbn.png" width="130">
 </a>
 
 <a href="https://twitter.com/iamrbn_">
-<img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="200">
+<img title="Follow Me On Twitter @iamrbn_" src="Images/Badges/twitter_black.png" width="137">
 </a>
+
+<a href="https://mastodon.social/@iamrbn">
+<img title="Follow Me On Mastodon @iamrbn@mastodon.social" src="Images/Badges/mastodon_black.png" width="170">
+</a>
+
+
 
 [^1]:[Function](https://github.com/mvan231/Scriptable#updater-mechanism-code-example "GitHub Repo") is written by the amazing [@mvan231](https://twitter.com/mvan231 "Twitter")
