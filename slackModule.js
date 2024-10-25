@@ -1,6 +1,6 @@
 //=======================================//
 //=========== START OF MODULE ===========//
-//============= Version 1.0 =================//
+//============= Version 0.8 =============//
 
 
 async function getFromAPI(){
@@ -54,9 +54,9 @@ async function createHeader(w, iSize, fSize) {
 };
 
 
-async function addString(widget, leftText, rightText) {
+async function addString(widget, api, leftText, rightText) {
   let line = widget.addStack()
-      line.spacing = 15
+       line.spacing = 15
 
   let firstStack = line.addStack()
       firstStack.centerAlignContent()
@@ -96,41 +96,43 @@ async function getImageFor(name){
 };
 
 
-async function presentMenu(emoji, api, widget) {
+/*
+async function presentMenu(emoji, api, widget){
 	let alert = new Alert()
 	alert.title = "Slack Status"
 	alert.message = emoji + api.status.toUpperCase() + emoji
 	alert.addAction("Small")
-	/*alert.addAction("Medium")
+	alert.addAction("Medium")
 	alert.addAction("Large")
-      alert.addAction("Small LS")
-      alert.addAction("Medium LS")
-      alert.addAction("Error Widget")*/
+	alert.addAction("Small LS")
+	alert.addAction("Medium LS")
+	alert.addAction("Error Widget")
 	alert.addAction("Web Dashboard ↗")
 	alert.addCancelAction("Cancel")
 	idx = await alert.present()
 	if (idx === 0){
 		w = widget//await createSmallWidget()
 		await w.presentSmall()
-	/*} else if (idx == 1) {
+	} else if (idx == 1) {
 		let widget = await createMediumWidget()
 		await widget.presentMedium()
 	} else if (idx == 2) {
 		let widget = await createLargeWidget()
 		await widget.presentLarge()
    	} else if (idx == 3) {
-            let widget = await createSmallLSW()
+   	    let widget = await createSmallLSW()
 		await widget.presentAccessoryCircular()
-      } else if (idx == 4) {
-            let widget = await createMediumLSW()
+	} else if (idx == 4) {
+        let widget = await createMediumLSW()
 		await widget.presentAccessoryRectangular()
 	} else if (idx == 5) {
-            let widget = await createErrorWidget(20)
-     		await widget.presentMedium()*/
+        let widget = await createErrorWidget(20)
+     	await widget.presentMedium()
       } else if (idx == 1){
             Safari.openInApp("https://status.slack.com", false)
       }
 };
+*/
 
 
 // LOADING AND SAVING IMAGES FROM URL TO FOLDER
@@ -149,7 +151,7 @@ async function saveImages(fm, dir){
 };
 
 
-function createIssueNotification(){
+function createIssueNotification(api, nKey){
  let notify = new Notification()
      notify.title = `Slack ${api.active_incidents[0].type}`.toUpperCase()
      notify.subtitle = `Trouble with: ${api.active_incidents[0].services}`
@@ -168,7 +170,7 @@ function createIssueNotification(){
 };
 
 
-function createOkNotification() {
+function createOkNotification(api, nKey){
  let notify = new Notification()
      notify.title = "Slack is now running again"
      notify.subtitle = "Trouble has been solved"
@@ -184,14 +186,14 @@ function createOkNotification() {
 };
 
 
-async function createErrorWidget(pddng) {
+async function createErrorWidget(pddng, bgGradient) {
   let errWidget = new ListWidget()
-      errWidget.setPadding(pddng, pddng, pddng, pddng)
-      errWidget.backgroundGradient = bgGradient
-      errWidget.addImage(await sModule.getImageFor("sadSlackBot-badConnection")).cornerRadius = 20
-      errWidget.addSpacer()
-      wTitle = errWidget.addText("No API Response").font = Font.headline()
-      wSubtitle = errWidget.addText("Please ckeck your internet connection").font = Font.subheadline()
+       errWidget.setPadding(pddng, pddng, pddng, pddng)
+       errWidget.backgroundGradient = bgGradient
+       errWidget.addImage(await getImageFor("sadSlackBot-badConnection")).cornerRadius = 20
+       errWidget.addSpacer()
+       wTitle = errWidget.addText("No API Response").font = Font.headline()
+       wSubtitle = errWidget.addText("Please ckeck your internet connection").font = Font.subheadline()
   return errWidget
 };
 
@@ -244,7 +246,7 @@ module.exports = {
     createHeader,
     addString,
     presentAlert,
-    presentMenu,
+    //presentMenu,
     saveImages,
     getImageFor,
     createIssueNotification,
