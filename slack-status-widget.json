@@ -1,4 +1,4 @@
 {
-    "version": "1.3",
-    "notes":"• Added rectangular lockscreen widget styled like the medium one\n• Some services have been renamed by Slack in the front- & backend. Some services have also been added. The large widget has been adapted accordingly.\n• Removed widget selection at the in app dialogue - Now only 'Web Dashboard' is displayed."
+    "version": 1.4,
+    "notes":"• Parts of the script have been moved to a module for performance improvements.\n• General script improvements."
 }
