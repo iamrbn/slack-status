@@ -6,7 +6,6 @@
 
 let getStatusNotifications = true //Set to false if you dont wanna get notifications!
 
-
 let nKey = Keychain
 let nParameter = await args.notification
 let refreshInt = await args.widgetParameter
@@ -37,7 +36,7 @@ let api = data.api
 
 if (config.runsInApp && !data.noInternet){
 	 Safari.openInApp("https://status.slack.com", false)
-} else if (config.runsInWidget){
+} else if (config.runsInWidget || config.runsInAccessoryWidget){
   switch (wSize) {
     	case "small":
         if (data.noInternet) w = await sModule.createErrorWidget(10, bgGradient)
@@ -51,7 +50,7 @@ if (config.runsInApp && !data.noInternet){
         if (data.noInternet) w = await sModule.createErrorWidget(25, bgGradient)
     	   else w = await createLargeWidget()
 	break;
-      case "accessoryRectangular": widget = await createMediumLSW()
+      case "accessoryRectangular": w = await createMediumLSW()
       break;
     	default: w = await sModule.createErrorWidget(20, bgGradient)
 	}
@@ -61,9 +60,10 @@ if (config.runsInApp && !data.noInternet){
 if (!nKey.contains("current_issue")) nKey.set("current_issue", api.incident_updated)
 //log(nKey.get("current_issue"))
 if (getStatusNotifications){
-  if (nKey.get("current_issue") != api.incident_updated && api.status != 'ok') sModule.createIssueNotification(api, nKey)
-  else if (nKey.get("current_issue") != api.incident_updated && api.status == 'ok') sModule.createOkNotification(api, nKey)
-}
+  if (nKey.get("current_issue") != api.incident_updated && api.status != 'ok') await sModule.createIssueNotification(api, nKey)
+  else if (nKey.get("current_issue") != api.incident_updated && api.status == 'ok') await sModule.createOkNotification(api, nKey)
+};
+
 
 async function createMediumLSW(){
   let w = new ListWidget()
@@ -114,7 +114,8 @@ async function createMediumLSW(){
       footer.rightAlignText()
       
   return w
-}
+};
+
 
 // ############ SETUP SMALL WIDGET ############
 async function createSmallWidget(){
@@ -167,7 +168,8 @@ async function createSmallWidget(){
       footer.centerAlignText()
 
 	return w
-}
+};
+
 
 // ########### SETUP MEDIUM WIDGET ###########
 async function createMediumWidget() {
@@ -274,7 +276,7 @@ async function createMediumWidget() {
       footer.centerAlignText()
 
 	return w
-}
+};
 
 
 // ############ SETUP LARGE WIDGET ##############
@@ -389,7 +391,7 @@ async function createLargeWidget() {
       footer.centerAlignText()
 
 	return w
-}
+};
 
 
 //Loads javascript module if needed
