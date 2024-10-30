@@ -22,7 +22,7 @@ let modulePath = fm.joinPath(dir, 'slackModule.js')
 if (!fm.fileExists(modulePath)) await loadModule()
 if (!fm.isFileDownloaded(modulePath)) await fm.downloadFileFromiCloud(modulePath)
 let sModule = importModule(modulePath)
-let uCheck = await sModule.updateCheck(fm, modulePath, 1.4)
+let uCheck = await sModule.updateCheck(fm, modulePath, 1.41)
 let top = Color.dynamic(new Color('#ffffff'), new Color('#4E1E54'))
 let middle = Color.dynamic(new Color('#EDEDED'), new Color('#481C4D'))
 let bottom = Color.dynamic(new Color('#D4D4D4'), new Color('#441A49'))
@@ -57,11 +57,11 @@ if (config.runsInApp && !data.noInternet){
 	Script.setWidget(w)
 } else if (config.runsInNotification) QuickLook.present(await sModule.getImageFor(nParameter.userInfo.imgName))
 
-if (!nKey.contains("current_issue")) nKey.set("current_issue", api.incident_updated)
+if (!nKey.contains("current_issue")) nKey.set("current_issue", api.date_updated)
 //log(nKey.get("current_issue"))
 if (getStatusNotifications){
-  if (nKey.get("current_issue") != api.incident_updated && api.status != 'ok') await sModule.createIssueNotification(api, nKey)
-  else if (nKey.get("current_issue") != api.incident_updated && api.status == 'ok') await sModule.createOkNotification(api, nKey)
+  if (nKey.get("current_issue") != api.date_updated && api.status != 'ok') sModule.createIssueNotification(api, nKey)
+  else if (nKey.get("current_issue") != api.date_updated && api.status == 'ok') sModule.createOkNotification(api, nKey)
 };
 
 
@@ -172,7 +172,7 @@ async function createSmallWidget(){
 
 
 // ########### SETUP MEDIUM WIDGET ###########
-async function createMediumWidget() {
+async function createMediumWidget(){
   let w = new ListWidget()
       w.setPadding(10, 10, 5, 10)
       w.backgroundGradient = bgGradient
