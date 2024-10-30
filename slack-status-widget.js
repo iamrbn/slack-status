@@ -35,7 +35,7 @@ let data = await sModule.getFromAPI()
 let api = data.api
 
 if (config.runsInApp && !data.noInternet){
-	 Safari.openInApp("https://status.slack.com", false)
+	 //Safari.openInApp("https://status.slack.com", false)
 } else if (config.runsInWidget || config.runsInAccessoryWidget){
   switch (wSize) {
     	case "small":
@@ -153,7 +153,7 @@ async function createSmallWidget(){
      statusTitle.centerAlignText()
 
   if (uCheck.needUpdate){
-      updateInfo = w.addText(`Update ${uCheck.version} Available!`)
+      updateInfo = w.addText(`Update ${uCheck.uC.version} Available!`)
       updateInfo.font = Font.lightRoundedSystemFont(11)
       updateInfo.centerAlignText()
       updateInfo.textColor = Color.red()
@@ -259,7 +259,7 @@ async function createMediumWidget(){
 	}
 
   if (uCheck.needUpdate){
-      updateInfo = w.addText(`Update ${uCheck.version} Available!`)
+      updateInfo = w.addText(`Update ${uCheck.uC.version} Available!`)
       updateInfo.font = Font.regularRoundedSystemFont(14)
       updateInfo.url = 'https://github.com/iamrbn/slack-status/tree/main'
       updateInfo.textColor = Color.red()
@@ -290,7 +290,7 @@ async function createLargeWidget() {
 
   if (uCheck.needUpdate){
       w.addSpacer(7)
-      updateInfo = w.addText(`Update ${uCheck.version} Available!`)
+      updateInfo = w.addText(`Update ${uCheck.uC.version} Available!`)
       updateInfo.font = Font.regularRoundedSystemFont(14)
       updateInfo.url = 'https://github.com/iamrbn/slack-status/tree/main'
       updateInfo.textColor = Color.red()
