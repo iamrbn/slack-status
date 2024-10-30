@@ -1,6 +1,6 @@
 //=======================================//
 //=========== START OF MODULE ===========//
-//============= Version 0.9 =================//
+//============= Version 1.0 =================//
 
 
 async function getFromAPI(){
@@ -169,7 +169,7 @@ function createIssueNotification(api, nKey){
        notify.userInfo = {"imgName":api.type}
        notify.schedule()
     
-       nKey.set("current_issue", api. incident_updated)
+       nKey.set("current_issue", api. date_updated)
 };
 
 
@@ -177,7 +177,7 @@ function createOkNotification(api, nKey){
   let notify = new Notification()
        notify.title = "Slack is now running again"
        notify.subtitle = "Trouble has been solved"
-       notify.identifier = api.incident_updated
+       notify.identifier = api. date_updated
        notify.threadIdentifier = Script.name()
        notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com")
        notify.scriptName = Script.name()
@@ -185,7 +185,7 @@ function createOkNotification(api, nKey){
        notify.userInfo = {"imgName":'ok'}
        notify.schedule()
     
-        nKey.set("current_issue", api.incident_updated)
+        nKey.set("current_issue", api. date_updated)
 };
 
 
