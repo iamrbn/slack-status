@@ -35,7 +35,7 @@ let data = await sModule.getFromAPI()
 let api = data.api
 
 if (config.runsInApp && !data.noInternet){
-	 //Safari.openInApp("https://status.slack.com", false)
+	 Safari.openInApp("https://status.slack.com", false)
 } else if (config.runsInWidget || config.runsInAccessoryWidget){
   switch (wSize) {
     	case "small":
