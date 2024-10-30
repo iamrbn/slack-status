@@ -264,7 +264,7 @@ async function createMediumWidget() {
       updateInfo.url = 'https://github.com/iamrbn/slack-status/tree/main'
       updateInfo.textColor = Color.red()
       updateInfo.centerAlignText()
-      widget.url = 'https://github.com/iamrbn/slack-status/tree/main'
+      w.url = 'https://github.com/iamrbn/slack-status/tree/main'
 }
 
       dateFormatter.useShortDateStyle()
