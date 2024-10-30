@@ -1,4 +1,4 @@
 {
-    "version": 1.4,
-    "notes":"• Parts of the script have been moved to a module for performance improvements.\n• General script improvements."
+    "version": 1.41,
+    "notes":"• Fixes a bug that triggers an error after changing the Api content."
 }
