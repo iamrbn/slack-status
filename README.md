@@ -144,9 +144,6 @@ iCloud Drive/
 ```
 ___
 
-<a href="https://reddit.com/user/hrb7">
-<img title="Follow Me On Reddit @hrb7" src="Images/Badges/reddit_black.png" width="130">
-</a>
 
 <a href="https://reddit.com/user/iamrbn">
 <img title="Follow Me On Reddit @iamrbn" src="Images/Badges/reddit_black_iamrbn.png" width="130">
