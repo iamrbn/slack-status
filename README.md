@@ -24,6 +24,22 @@ https://fifithebulldog.github.io/scriptable-testflight-watcher/TestFlight%20Watc
 </details>
 
 <details>
+  <summary><b>1.41 Update Notes (30.10.2024)</b></summary>
+  
+  - Fixes a bug that triggers an error after changing the API content
+</details>
+
+<details>
+  <summary><b>1.3 Update Notes (28.05.2024)</b></summary>
+  
+  - Added rectangular lockscreen widget, styled like the medium one
+  - Some services have been renamed by slack in the front- & backend
+  - Some services have been also been added
+  - The large widget has been adapted accordingly
+  - Removed widget selection at the in-app dialogue - Now only the 'Web-Dashboard' is displayed
+</details>
+
+<details>
   <summary><b>1.2.1 Update Notes (19.07.2022)</b></summary>
   
 - Fixed a problem where the widget displays an error when an open update is pending. Now it should work correctly again.
