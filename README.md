@@ -15,7 +15,7 @@ https://fifithebulldog.github.io/scriptable-testflight-watcher/TestFlight%20Watc
 <img title="SlackBot" src="Symbols/slackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
 <!-- </kbd> -->
 
-<details>
+<details open>
   <summary><b>1.5 Update Notes (xx.11.2024)</b></summary>
   
 - Added Update Widget
@@ -80,22 +80,20 @@ Supports all sizes (_small, medium & large_)
 ___ -->
 
 ### The Widgets have a **Dynamic Background** and is available in all sizes
-
 <img title="" src="Images/dynamicBackground.png" width="500">
 
 <br>
 
 ### Run Script in App
-
 By running the scirpt **In App** it will present the online dashboard of the current slack status
-
-<img src="Images/runsInApp.png" width="300">
 
 <br>
 
 ### Bad/No Internet Connection & Update Available
-
-When the script cannot connect to the Slack API it will shown the Error Widget.
+If the script does not receive a response from the Slack API, it will be displayed in the widget.    
+It also shows if there is an script update available.    
+<img title="No Response Widget" src="Images/errorWidgetMedium.png" width="400"> <img title="Update Widget" src="Images/updateWidgetMedium.png" width="380">    
+<img title="Lockscreen Widgets" src="Images/mockupLockscreenIssueWidgets.png" width="750">
 
 <br>
 
@@ -113,8 +111,6 @@ const refreshInt = 60 //in minutes
 ```
 
 ### On First Run
-
-It will Downloads and Save the Following Symbols at the directory "slack-status-widget"
 
 <img title="Slack Icon" src="Symbols/slackIcon.png" width="35" align="center"> <img title="Sad SlackBot - Bad Connection" src="Symbols/sadSlackBot-badConnection.png" width="35" align="center"> <img title="OK" src="Symbols/ok.png" width="50" align="center"> <img title="Incident" src="Symbols/incident.png" width="50" align="center"> <img title="Notice" src="Symbols/notice.png" width="50" align="center"> <img title="Outabe" src="Symbols/outage.png" width="50" align="center"> <img title="Maintenance" src="Symbols/maintenance.png" width="50" align="center">
 
