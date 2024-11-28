@@ -1,59 +1,71 @@
+
 //=======================================//
 //=========== START OF MODULE ===========//
-//============= Version 1.0 =================//
+//============= Version 1.1 =============//
 
 
 async function getFromAPI(){
-    var api, noInternet, emoji
+    let api, res;
     try {
         api = await new Request('https://status.slack.com/api/v2.0.0/current').loadJSON()
-        //console.log({api})
-        noInternet = false
-        emoji = " ✅ "
-        if (api.status != "ok"){
-            api = {
-            created: api.date_created,
-            updated: api.date_updated,
-            id: api.active_incidents[0].id,
-            incident_created: api.active_incidents[0].date_created,
-            incident_updated: api.active_incidents[0].date_updated,
-            title: api.active_incidents[0].title,
-            type: api.active_incidents[0].type,
-            status: api.active_incidents[0].status,
-            url: api.active_incidents[0].url,
-            services: api.active_incidents[0].services,
-            notes_created: api.active_incidents[0].notes[0].date_created,
-            notes_body: api.active_incidents[0].notes[0].body
-        }
-            if (api.type == "incident" || "active") emoji = " ⚠️ "
-            else if (api.type == "outage") emoji = " ⛔️ "
-            else if (api.type == "notice") emoji = " 🚩 "
-            else if (api.type == "maintenance") emoji = " 🔧 "
+        //console.log(JSON.stringify(api, null, 1))
+        if (api.status !== 'ok'){
+            res = {
+                created: api.date_created,
+                updated: api.date_updated,
+                id: api.active_incidents[0].id,
+                incident_created: api.active_incidents[0].date_created,
+                incident_updated: api.active_incidents[0].date_updated,
+                title: api.active_incidents[0].title,
+                type: api.active_incidents[0].type,
+                status: api.active_incidents[0].status,
+                url: api.active_incidents[0].url,
+                services: api.active_incidents[0].services,
+                notes_created: api.active_incidents[0].notes[0].date_created,
+                notes_body: api.active_incidents[0].notes[0].body
+            }
+        } else {
+            res = {
+                status: api.status,
+                created: api.date_created,
+                updated: api.date_updated,
+                incident: api.active_incidents
+            }
         }
     } catch(err){
-        noInternet = true
-        if (config.runsInApp) await presentAlert(err.message)
-        //throw new Error(err.message)
+        res = 404
+        console.error(err.message)
     }
-    
-return {api, noInternet, emoji}
+    return res
 };
 
 
-async function createHeader(w, iSize, fSize){
-     headerStack = w.addStack()
+async function createGradient(){
+    gradient = Object.assign(new LinearGradient(), {
+        colors: [
+            Color.dynamic(new Color('#FFFFFF'), new Color('#4E1E54')),
+            Color.dynamic(new Color('#EDEDED'), new Color('#481C4D')),
+            Color.dynamic(new Color('#D4D4D4'), new Color('#441A49'))
+            ],
+        locations: [0, 0.4, 1]
+    })
+    
+    return gradient
+};
+
+async function createHeader(widget, imgSize, fontSize){
+     headerStack = widget.addStack()
      headerStack.centerAlignContent()
      headerStack.url = "slack://"
-     headerStack.spacing = 7
+     headerStack.spacing = 6
      
-     headerIcon = headerStack.addImage(await getImageFor("slackIcon")).imageSize = new Size(iSize, iSize)
-     //headerStack.addSpacer(7)
-     headerTitle = headerStack.addText("Slack Status").font = new Font("Futura-Medium", fSize)
+     headerIcon = headerStack.addImage(await getImage("slackIcon")).imageSize = new Size(imgSize, imgSize)
+     headerTitle = headerStack.addText("Slack Status").font = new Font("Futura-Medium", fontSize)
 };
 
 
 async function addString(widget, api, leftText, rightText){
-  var image = 'ok'
+  let image = 'ok'
   let line = widget.addStack()
        line.spacing = 15
 
@@ -63,9 +75,8 @@ async function addString(widget, api, leftText, rightText){
        firstStack.addSpacer()
 
   if (api.status != 'ok' && api.services.includes(leftText)) image = api.type
-  //else image = 'ok'
-  
-  if (leftText != "") firstStack.addImage(await getImageFor(image)).imageSize = new Size(20, 20)
+
+  if (leftText != "") firstStack.addImage(await getImage(image)).imageSize = new Size(20, 20)
 
   let secondStack = line.addStack()
        secondStack.centerAlignContent()
@@ -73,81 +84,48 @@ async function addString(widget, api, leftText, rightText){
        secondStack.addSpacer()
        
   if (api.status != 'ok' && api.services.includes(rightText)) image = api.type
-  //else image = 'ok'
   
-  if (rightText != "") secondStack.addImage(await getImageFor(image)).imageSize = new Size(20, 20)
+  if (rightText != "") secondStack.addImage(await getImage(image)).imageSize = new Size(20, 20)
 };
 
 
 async function presentAlert(message){
-  let alert = new Alert()
-       alert.title = "No Api Response"
-       alert.message = message
-       alert.addAction("OK")
-       await alert.present()
+    alert = new Alert()
+    alert.title = "No API Response"
+    alert.message = message
+    alert.addAction("OK")
+    await alert.present()
 };
 
 
-async function getImageFor(name){
-     fm = FileManager.iCloud()
-     dir = fm.joinPath(fm.documentsDirectory(), "slack-status-widget")
-     imgPath = fm.joinPath(dir, name + '.png')
-     await fm.downloadFileFromiCloud(imgPath)
-     img = await fm.readImage(imgPath)
+async function getImage(imgName, sfName){
+    if (sfName != null){
+        sf = SFSymbol.named(sfName)
+        sf.applyFont(Font.thinRoundedSystemFont(500))
+        img = sf.image
+    } else if (imgName != null){
+        fm = FileManager.iCloud()
+        dir = fm.joinPath(fm.documentsDirectory(), "slack-status-widget")
+        imgPath = fm.joinPath(dir, imgName + '.png')
+        await fm.downloadFileFromiCloud(imgPath)
+        img = await fm.readImage(imgPath)
+     }
 
  return img
 };
 
 
-/*
-async function presentMenu(emoji, api, widget){
-	let alert = new Alert()
-	alert.title = "Slack Status"
-	alert.message = emoji + api.status.toUpperCase() + emoji
-	alert.addAction("Small")
-	alert.addAction("Medium")
-	alert.addAction("Large")
-	alert.addAction("Small LS")
-	alert.addAction("Medium LS")
-	alert.addAction("Error Widget")
-	alert.addAction("Web Dashboard ↗")
-	alert.addCancelAction("Cancel")
-	idx = await alert.present()
-	if (idx === 0){
-		w = widget//await createSmallWidget()
-		await w.presentSmall()
-	} else if (idx == 1) {
-		let widget = await createMediumWidget()
-		await widget.presentMedium()
-	} else if (idx == 2) {
-		let widget = await createLargeWidget()
-		await widget.presentLarge()
-   	} else if (idx == 3) {
-   	    let widget = await createSmallLSW()
-		await widget.presentAccessoryCircular()
-	} else if (idx == 4) {
-        let widget = await createMediumLSW()
-		await widget.presentAccessoryRectangular()
-	} else if (idx == 5) {
-        let widget = await createErrorWidget(20)
-     	await widget.presentMedium()
-      } else if (idx == 1){
-            Safari.openInApp("https://status.slack.com", false)
-      }
-};
-*/
-
-
 // LOADING AND SAVING IMAGES FROM URL TO FOLDER
-async function saveImages(fm, dir){
-  let imgURL = "https://raw.githubusercontent.com/iamrbn/slack-status/main/Symbols/"
-  let imgs = ["slackIcon.png", "ok.png", "incident.png", "outage.png", "notice.png", "maintenance.png"]
+async function saveImages(){
+  fm = FileManager.iCloud()
+  dir = fm.joinPath(fm.documentsDirectory(), "slack-status-widget")
+  imgURL = "https://raw.githubusercontent.com/iamrbn/slack-status/main/Symbols/"
+  imgs = ["slackIcon.png", "ok.png", "incident.png", "outage.png", "notice.png", "maintenance.png"]
   for (img of imgs){
         img_path = fm.joinPath(dir, img)
         if (!fm.fileExists(img_path)){
             console.log("Loading image: " + img)
-            request = new Request(imgURL + img)
-            image = await request.loadImage()
+            image = await new Request(imgURL + img).loadImage()
             fm.writeImage(img_path, image)
         }
     }
@@ -156,20 +134,20 @@ async function saveImages(fm, dir){
 
 function createIssueNotification(api, nKey){
   let notify = new Notification()
-       notify.title = `Slack ${api.type}`.toUpperCase()
+       notify.title = `SLACK ${api.type}`.toUpperCase()
        notify.subtitle = `Trouble with: ${api.services}`
        notify.openURL = api.url
        notify.body = api.notes_body
-       notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com")
-       notify.addAction("Show " + api.type + " ID " + api.id, api.url, true)
+       //notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com")
+       notify.addAction(api.type + " ID_" + api.id, api.url)
        notify.identifier = `ID_${api.id}`
        notify.threadIdentifier = Script.name()
        notify.preferredContentHeight = 77
        notify.scriptName = Script.name()
        notify.userInfo = {"imgName":api.type}
        notify.schedule()
-    
-       nKey.set("current_issue", api. date_updated)
+  
+       nKey.set("current_issue", api.updated)
 };
 
 
@@ -177,85 +155,143 @@ function createOkNotification(api, nKey){
   let notify = new Notification()
        notify.title = "Slack is now running again"
        notify.subtitle = "Trouble has been solved"
-       notify.identifier = api. date_updated
+       notify.identifier = api.updated
+       notify.openURL = 'https://status.slack.com'
        notify.threadIdentifier = Script.name()
-       notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com")
+       //notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com")
        notify.scriptName = Script.name()
-       notify.preferredContentHeight = 77
+       //notify.preferredContentHeight = 77
        notify.userInfo = {"imgName":'ok'}
        notify.schedule()
     
-        nKey.set("current_issue", api. date_updated)
+       nKey.set("current_issue", api.updated)
 };
 
 
-async function createErrorWidget(pddng, bgGradient){
-  let errWidget = new ListWidget()
-       errWidget.setPadding(pddng, pddng, pddng, pddng)
-       errWidget.backgroundGradient = bgGradient
-       errWidget.addImage(await getImageFor("sadSlackBot-badConnection")).cornerRadius = 20
-       
-       errWidget.addSpacer()
-       
-       errWidget.addText("No API Response").font = Font.headline()
-       errWidget.addText("Please ckeck your internet connection").font = Font.subheadline()
+async function infoWidget(widgetSize, dataError, updateInfo){
+    iWidget = new ListWidget()
+    iWidget.refreshAfterDate = new Date(Date.now() + 1000 * 60 * 3)
+    iWidget.backgroundGradient = await createGradient()
     
-  return errWidget
+    img = (dataError === 404) ? await getImage("sadSlackBot-badConnection", null) : await getImage(null, "gear.badge")
+    title = (dataError === 404) ? 'No API Response' : `New Script Version ${updateInfo.uC.version} Available`
+    subtitle = (dataError === 404) ? 'Please check your internet connection' : updateInfo.uC.notes
+    opacity = (dataError === 404) ? 1.0 : 0.5
+    
+    if (widgetSize === 'accessoryCircular'){
+        iWidget.addAccessoryWidgetBackground = true
+        text = iWidget.addText(title.replace('New Script ', '').replace(/(\d)\s/, '$1\n'))
+        text.font = Font.boldMonospacedSystemFont(8)
+        text.centerAlignText()
+    } else if (widgetSize === 'accessoryRectangular'){
+        iWidget.addAccessoryWidgetBackground = true
+        //iWidget.addSpacer()
+        iWidget.setPadding(2, 2, 2, 2)
+        iStack = iWidget.addStack()
+        iStack.spacing = 3
+        tStack = iStack.addStack()
+        tStack.layoutVertically()
+        image = iStack.addImage(img)
+        image.imageOpacity = 1
+        image.imageSize = new Size(35, 35)
+        image.cornerRadius = 7
+        tStack.addText(title).font = new Font("Futura-Medium", 10)
+        //iWidget.addSpacer()
+    } else if (widgetSize === 'small'){
+        iWidget.addSpacer()
+        iWidget.setPadding(10, 10, 10, 10)
+        image = iWidget.addImage(img)
+        image.imageOpacity = opacity
+        image.cornerRadius = 15
+        //image.imageSize = new Size(22, 26)
+        iWidget.addSpacer()
+        iWidget.addText(title).font = new Font("Futura-Bold", 12)
+        iWidget.addText(subtitle).font = new Font("Futura-Medium", 11)
+        iWidget.addSpacer()
+    } else if (widgetSize === 'medium'){
+        iWidget.addSpacer()
+        iWidget.setPadding(20, 20, 20, 20)
+        image = iWidget.addImage(img)
+        image.cornerRadius = 15
+        image.imageOpacity = opacity
+        //image.imageSize = new Size(26, 30)
+        iWidget.addSpacer()
+        iWidget.addText(title).font = new Font("Futura-Bold", 14)
+        iWidget.addText(subtitle).font = new Font("Futura-Medium", 13)
+        iWidget.addSpacer()
+    }  else if (widgetSize === 'large'){
+        iWidget.addSpacer()
+        iWidget.setPadding(20, 20, 20, 20)
+        image = iWidget.addImage(img)
+        image.cornerRadius = 20
+        image.imageOpacity = opacity
+        image.imageSize = new Size(100, 100)
+        iWidget.addSpacer(10)
+        iWidget.addText(title).font = new Font("Futura-Bold", 15)
+        iWidget.addText(subtitle).font = new Font("Futura-Medium", 14)
+        iWidget.addSpacer()
+    }
+
+  return iWidget
+  
 };
 
 
 //Checks if's there an server update on GitHub available
-async function updateCheck(fm, modulePath, version){
-    let url = 'https://raw.githubusercontent.com/iamrbn/slack-status/main/'
-    let endpoints = ['slack-status-widget.js', 'slackModule.js']
-    let uC
+async function updateCheck(version){
+    fm = FileManager.iCloud()
+    dir = fm.joinPath(fm.documentsDirectory(), "slack-status-widget")
+    url = 'https://raw.githubusercontent.com/iamrbn/slack-status/main/'
+    endpoints = ['slack-status-widget.js', 'slackModule.js']
+    
     try {
-      updateCheck = new Request(url+endpoints[0]+'on')
-      uC = await updateCheck.loadJSON()
+      uC = await new Request(url+endpoints[0]+'on').loadJSON()
     } catch (err){
-      throw new Error(err.message)
+      console.error('Error 404: ' + err.message)
+      uC = 404
     }
 
     needUpdate = false
-    if (uC.version > version){
-        needUpdate = true
-        if (config.runsInApp){
-        //console.error(`New Server Version ${uC.version} Available`)
-            let newAlert = new Alert()
-                 newAlert.title = `New Server Version ${uC.version} Available!`
-                 newAlert.addAction("OK")
-                 newAlert.addDestructiveAction("Later")
-                 newAlert.message="Changes:\n" + uC.notes + "\n\nOK starts the download from GitHub\n More informations about the update changes go to the GitHub Repo"
-                 
-                if (await newAlert.present() === 0){
-                    reqCode = new Request(url+endpoints[0])
-                    updatedCode = await reqCode.loadString()
-                    pathCode = fm.joinPath(fm.documentsDirectory(), `${Script.name()}.js`)
-                    fm.writeString(pathCode, updatedCode)
-                    reqModule = new Request(url+endpoints[1])
-                    moduleFile = await reqModule.loadString()
-                    fm.writeString(modulePath, moduleFile)
-                    throw new Error("Update Complete!")
-                 }
-         }
-     } else {
-      log(">> SCRIPT IS UP TO DATE!")
-     }
+    if (typeof uC !== 'number' && uC.version > version){
+      needUpdate = true
+      if (config.runsInApp){
+         //console.error(`New Server Version ${uC.version} Available`)
+         let newAlert = new Alert()
+              newAlert.title = `New Server Version ${uC.version} Available!`
+              newAlert.addAction("OK")
+              newAlert.addDestructiveAction("Later")
+              newAlert.message = "Changes:\n" + uC.notes + "\n\nOK starts the download from GitHub\n More informations about the update changes go to the GitHub Repo"
+         if ( await newAlert.present() === 0 ){
+              updatedCode = await new Request(url+endpoints[0]).loadString()
+              codePath = fm.joinPath(fm.documentsDirectory(), `${Script.name()}.js`)
+              fm.writeString(codePath, updatedCode)
+              moduleFile = await new Request(url+endpoints[1]).loadString()
+              modulePath = fm.joinPath(dir, 'slackModule.js')
+              fm.writeString(modulePath, moduleFile)
+              throw "Update Complete!"
+            } else {
+              throw "Update Canceled!"
+            }
+        }
+   } else if (typeof uC === 'number'){
+      needUpdate = undefined
+   } else if (uC.version = version){
+      console.log(">> SCRIPT IS UP TO DATE!")
+   }
      
   return {uC, needUpdate}
 };
 
-
 //Exports Functions
 module.exports = {
     getFromAPI,
-    createErrorWidget,
+    createGradient,
+    infoWidget,
     createHeader,
     addString,
     presentAlert,
-    //presentMenu,
     saveImages,
-    getImageFor,
+    getImage,
     createIssueNotification,
     createOkNotification,
     updateCheck
