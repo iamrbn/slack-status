@@ -1,33 +1,26 @@
-# <img title="Slack Symbol" src="Symbols/slackIcon.png" width="27"> Slack-Status Widget for Scriptable
+# <img title="Slack Icon" src="Symbols/slackIcon.png" width="27"> Slack-Status Widget for Scriptable
 
-<!-- [![](https://img.shields.io/badge/author-@whothefuckishrb-blue.svg?style=flat&logo=twitter)](https://twitter.com/whothefuckishrb) -->
 ![](https://img.shields.io/badge/dynamic/json?color=purple&label=Script%20Version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Fiamrbn%2Fslack-status%2Fmain%2Fslack-status-widget.json)
 
 Script which displays the current Slack Status via API as [Scriptable](https://scriptable.app "Homepage") Widget.    
 This is the missing widget for all power users of slack.
 
-<!--
-TL;DR: Download it [here](https://iamrbn.github.io/slack-status/Status%20Slack%20Widget.scriptable) fast as possible.
-https://fifithebulldog.github.io/scriptable-testflight-watcher/TestFlight%20Watcher.scriptable
--->
-
-<!-- <kbd> -->
-<img title="SlackBot" src="Symbols/slackBot.png" width="77"> <img title="Scriptable App Icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/92/2c/8d/922c8d5d-9e5b-207b-98fd-95d3387c8387/source/77x77bb.png" width="77">
-<!-- </kbd> -->
-
 <details open>
-  <summary><b>1.5 Update Notes (xx.11.2024)</b></summary>
+  <summary><b>1.5 Update Notes (29.11.2024)</b></summary>
   
-- Added Update Widget
-- improved No Connection Widget
-- Small code improvements
+- Added update widget for lock- & homescreen
+- Improved 'No Connection' widget
+- Improved UI of the medium sized widget
+- Small code improvements _(module & script)_
 </details>
 
 <details>
-  <summary><b>1.41 Update Notes (30.10.2024)</b></summary>
+  <summary>Older Updates</summary>
+    <details>
+      <summary><b>1.41 Update Notes (30.10.2024)</b></summary>
   
   - Fixes a bug that triggers an error after changing the API content
-</details>
+  </details>
 
 <details>
   <summary><b>1.3 Update Notes (28.05.2024)</b></summary>
@@ -54,10 +47,12 @@ https://fifithebulldog.github.io/scriptable-testflight-watcher/TestFlight%20Watc
 </details>
 
 <details>
-  <summary><b>1.1pdate Notes (24.05.2022)</b></summary>
+  <summary><b>1.1 Update Notes (24.05.2022)</b></summary>
   
   - Added selfupdate function[^1]
   - Script thinned out in various places
+</details>
+
 </details>
 
 ## ✨ FEATURES
