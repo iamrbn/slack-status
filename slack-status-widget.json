@@ -1,4 +1,4 @@
 {
-    "version": 1.41,
-    "notes":"• Fixes a bug that triggers an error after changing the API content."
+    "version": 1.5,
+    "notes":"• Added update widget for lock- & homescreen\n• Improved 'No Connection' widget\n• Improved UI of the medium sized widget\n• Small code improvements (module & script)"
 }
