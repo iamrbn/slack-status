@@ -101,7 +101,7 @@ async function presentAlert(message){
 async function getImage(imgName, sfName){
     if (sfName != null){
         sf = SFSymbol.named(sfName)
-        sf.applyFont(Font.thinRoundedSystemFont(500))
+        sf.applyFont(Font.regularRoundedSystemFont(500))
         img = sf.image
     } else if (imgName != null){
         fm = FileManager.iCloud()
