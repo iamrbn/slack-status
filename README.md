@@ -23,6 +23,13 @@ This is the missing widget for all power users of slack.
   </details>
 
 <details>
+  <summary><b>1.4</b> Update Notes (29.10.2024)</summary>
+  
+  - Parts of the script have been moved to a module for performance improvements
+  - General script improvements
+</details>
+
+<details>
   <summary><b>1.3</b> Update Notes (28.05.2024)</summary>
   
   - Added rectangular lockscreen widget, styled like the medium one
