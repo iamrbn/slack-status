@@ -142,7 +142,7 @@ function createIssueNotification(api, nKey){
        notify.addAction(api.type + " ID_" + api.id, api.url)
        notify.identifier = `ID_${api.id}`
        notify.threadIdentifier = Script.name()
-       notify.preferredContentHeight = 77
+       notify.preferredContentHeight = 70
        notify.scriptName = Script.name()
        notify.userInfo = {"imgName":api.type}
        notify.schedule()
@@ -160,7 +160,7 @@ function createOkNotification(api, nKey){
        notify.threadIdentifier = Script.name()
        //notify.addAction("Open Web-Dashboard ↗", "https://status.slack.com")
        notify.scriptName = Script.name()
-       //notify.preferredContentHeight = 77
+       notify.preferredContentHeight = 70
        notify.userInfo = {"imgName":'ok'}
        notify.schedule()
     
