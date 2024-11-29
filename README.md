@@ -6,7 +6,7 @@ Script which displays the current Slack Status via API as [Scriptable](https://s
 This is the missing widget for all power users of slack.
 
 <details open>
-  <summary><b>1.5 Update Notes (29.11.2024)</b></summary>
+  <summary><b>1.5</b> Update Notes (29.11.2024)</summary>
   
 - Added update widget for lock- & homescreen
 - Improved 'No Connection' widget
@@ -17,13 +17,13 @@ This is the missing widget for all power users of slack.
 <details>
   <summary>Older Updates</summary>
     <details>
-      <summary><b>1.41 Update Notes (30.10.2024)</b></summary>
+      <summary><b>1.41</b> Update Notes (30.10.2024)</summary>
   
   - Fixes a bug that triggers an error after changing the API content
   </details>
 
 <details>
-  <summary><b>1.3 Update Notes (28.05.2024)</b></summary>
+  <summary><b>1.3</b> Update Notes (28.05.2024)</summary>
   
   - Added rectangular lockscreen widget, styled like the medium one
   - Some services have been renamed by slack in the front- & backend
@@ -33,13 +33,13 @@ This is the missing widget for all power users of slack.
 </details>
 
 <details>
-  <summary><b>1.2.1 Update Notes (19.07.2022)</b></summary>
+  <summary><b>1.2.1</b> Update Notes (19.07.2022)</summary>
   
 - Fixed a problem where the widget displays an error when an open update is pending. Now it should work correctly again.
 </details>
 
 <details>
-  <summary><b>1.2 Update Notes (16.07.2022)</b></summary>
+  <summary><b>1.2</b> Update Notes (16.07.2022)</summary>
   
 - Added push notifications for slack status [Beta]
 - Improved the error/bad-connection widget
@@ -47,7 +47,7 @@ This is the missing widget for all power users of slack.
 </details>
 
 <details>
-  <summary><b>1.1 Update Notes (24.05.2022)</b></summary>
+  <summary><b>1.1</b> Update Notes (24.05.2022)</summary>
   
   - Added selfupdate function[^1]
   - Script thinned out in various places
